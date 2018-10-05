@@ -20,9 +20,9 @@ services:
       - apim_gateway
       - apim_portal
       - apim_management
-      - am_gateway
-      - am_management
-      - am_webui
+      # - am_gateway
+      # - am_management
+      # - am_webui
 
   mongodb:
     image: mongo:3.4
@@ -34,7 +34,7 @@ services:
       - MONGO_INITDB_DATABASE=gravitee
     volumes:
       - ./mongo/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
-      - ./data/mongo:/data/db
+      # - ./data/mongo:/data/db
       - ./logs/mongodb:/var/log/mongodb
 
   elasticsearch:
@@ -106,40 +106,40 @@ services:
       - mongodb
       - elasticsearch
 
-  am_gateway:
-    image: graviteeio/am-gateway:2
-    container_name: gio_platform_am_gateway
-    restart: always
-    volumes:
-      - ./logs/am-gateway:/opt/graviteeio-am-gateway/logs
-    environment:
-      - gravitee_management_mongodb_uri=mongodb://mongodb:27017/gravitee-am?serverSelectionTimeoutMS=5000&connectTimeoutMS=5000&socketTimeoutMS=5000
-      - gravitee_oauth2_mongodb_uri=mongodb://mongodb:27017/gravitee-am?serverSelectionTimeoutMS=5000&connectTimeoutMS=5000&socketTimeoutMS=5000
-    depends_on:
-      - mongodb
+  # am_gateway:
+  #   image: graviteeio/am-gateway:2
+  #   container_name: gio_platform_am_gateway
+  #   restart: always
+  #   volumes:
+  #     - ./logs/am-gateway:/opt/graviteeio-am-gateway/logs
+  #   environment:
+  #     - gravitee_management_mongodb_uri=mongodb://mongodb:27017/gravitee-am?serverSelectionTimeoutMS=5000&connectTimeoutMS=5000&socketTimeoutMS=5000
+  #     - gravitee_oauth2_mongodb_uri=mongodb://mongodb:27017/gravitee-am?serverSelectionTimeoutMS=5000&connectTimeoutMS=5000&socketTimeoutMS=5000
+  #   depends_on:
+  #     - mongodb
 
-  am_management:
-    image: graviteeio/am-management-api:2
-    container_name: gio_platform_am_management
-    restart: always
-    volumes:
-      - ./logs/am-management-api:/opt/graviteeio-am-management-api/logs
-    environment:
-      - gravitee_management_mongodb_uri=mongodb://mongodb:27017/gravitee-am?serverSelectionTimeoutMS=5000&connectTimeoutMS=5000&socketTimeoutMS=5000
-      - gravitee_oauth2_mongodb_uri=mongodb://mongodb:27017/gravitee-am?serverSelectionTimeoutMS=5000&connectTimeoutMS=5000&socketTimeoutMS=5000
-      - gravitee_jwt_cookiepath=/am/management
-      - gravitee_jwt_cookiesecure=true
-    depends_on:
-      - mongodb
+  # am_management:
+  #   image: graviteeio/am-management-api:2
+  #   container_name: gio_platform_am_management
+  #   restart: always
+  #   volumes:
+  #     - ./logs/am-management-api:/opt/graviteeio-am-management-api/logs
+  #   environment:
+  #     - gravitee_management_mongodb_uri=mongodb://mongodb:27017/gravitee-am?serverSelectionTimeoutMS=5000&connectTimeoutMS=5000&socketTimeoutMS=5000
+  #     - gravitee_oauth2_mongodb_uri=mongodb://mongodb:27017/gravitee-am?serverSelectionTimeoutMS=5000&connectTimeoutMS=5000&socketTimeoutMS=5000
+  #     - gravitee_jwt_cookiepath=/am/management
+  #     - gravitee_jwt_cookiesecure=true
+  #   depends_on:
+  #     - mongodb
 
-  am_webui:
-    image: graviteeio/am-management-ui:2
-    container_name: gio_platform_am_webui
-    restart: always
-    environment:
-      - MGMT_API_URL=https:\/\/localhost\/am\/
-      - MGMT_UI_URL=https:\/\/localhost\/am\/ui\/
-    volumes:
-      - ./logs/am-webui:/var/log/nginx
-    depends_on:
-      - am_management
+  # am_webui:
+  #   image: graviteeio/am-management-ui:2
+  #   container_name: gio_platform_am_webui
+  #   restart: always
+  #   environment:
+  #     - MGMT_API_URL=https:\/\/localhost\/am\/
+  #     - MGMT_UI_URL=https:\/\/localhost\/am\/ui\/
+  #   volumes:
+  #     - ./logs/am-webui:/var/log/nginx
+  #   depends_on:
+  #     - am_management
